@@ -1,66 +1,53 @@
-## Foundry
+# ValidatorRegistry • [![Unit Tests](https://github.com/chronicleprotocol/validator-registry/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/chronicleprotocol/validator-registry/actions/workflows/unit-tests.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+This contract provides an onchain registry for _Chronicle Protocol_ validators via 1-byte validators ids.
 
-Foundry consists of:
+A validators id is computed as the highest-order byte of the validators address, ie `uint8 validatorId = uint8(uint(uint160(validator)) >> 152);`
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+Due to validator ids being 1 byte, the maximum number of feeds supported is 256.
 
-## Documentation
+Note that a set of lifted validators can be encoded in a single uint. The code refers to it as `uint bloom`.
 
-https://book.getfoundry.sh/
+## Installation
 
-## Usage
+Install module via Foundry:
 
-### Build
-
-```shell
-$ forge build
+```bash
+$ forge install chronicleprotocol/validator-registry
 ```
 
-### Test
+## Contributing
 
-```shell
+The project uses the Foundry toolchain. You can find installation instructions [here](https://getfoundry.sh/).
+
+Setup:
+
+```bash
+$ git clone https://github.com/chronicleprotocol/validator-registry
+$ cd validator-registry/
+$ forge install
+```
+
+Run tests:
+
+```bash
 $ forge test
+$ forge test -vvvv # Run with full stack traces
+$ FOUNDRY_PROFILE=intense forge test # Run in intense mode
 ```
 
-### Format
+Lint:
 
-```shell
-$ forge fmt
+```bash
+$ forge fmt [--check]
 ```
 
-### Gas Snapshots
+Update gas snapshots:
 
-```shell
-$ forge snapshot
+```bash
+$ forge snapshot --nmt "Fuzz" [--check]
 ```
 
-### Anvil
+## Dependencies
 
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+- [chronicleprotocol/chronicle-std@v2](https://github.com/chronicleprotocol/chronicle-std/tree/v2)
