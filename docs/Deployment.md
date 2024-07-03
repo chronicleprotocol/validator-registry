@@ -38,8 +38,7 @@ The deployment process consists of two steps - the actual deployment and the sub
 Deployment:
 
 ```bash
-$ SALT_BYTES32=$(cast format-bytes32-string $SALT) && \
-  forge script \
+$ forge script \
     --keystore "$KEYSTORE" \
     --password "$KEYSTORE_PASSWORD" \
     --broadcast \
@@ -60,5 +59,5 @@ $ forge verify-contract \
     --etherscan-api-key "$ETHERSCAN_API_KEY" \
     --watch \
     --constructor-args $(cast abi-encode "constructor(address)" "$INITIAL_AUTHED") \
-    src/ValidatorRegistry.sol:"$SALT"
+    src/ValidatorRegistry.sol:ValidatorRegistry_1
 ```
