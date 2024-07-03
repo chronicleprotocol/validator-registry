@@ -41,6 +41,7 @@ Deployment:
 $ forge script \
     --keystore "$KEYSTORE" \
     --password "$KEYSTORE_PASSWORD" \
+    --sender "$INITIAL_AUTHED" \
     --broadcast \
     --rpc-url "$RPC_URL" \
     --sig "$(cast calldata "deploy(address)" "$INITIAL_AUTHED")" \
