@@ -11,8 +11,9 @@ docs_generated/
 # Dotenv file
 .env
 
-# Coverage file
+# Coverage file and directory
 lcov.info
+coverage/
 
 # Flattened contracts
 flattened/
