@@ -1,8 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.16;
 
+import {Vm} from "forge-std/Vm.sol";
 import {Test} from "forge-std/Test.sol";
 import {console2 as console} from "forge-std/console2.sol";
+
+import {IScribe} from "scribe/IScribe.sol";
+import {LibSecp256k1} from "scribe/libs/LibSecp256k1.sol";
 
 import {IAuth} from "chronicle-std/auth/IAuth.sol";
 
@@ -11,6 +15,7 @@ import {IValidatorRegistry} from "src/IValidatorRegistry.sol";
 abstract contract IValidatorRegistryTest is Test {
     IValidatorRegistry registry;
 
+    /*
     // Copied from IValidatorRegistry.
     event ValidatorLifted(address indexed caller, address indexed feed);
     event ValidatorDropped(address indexed caller, address indexed feed);
@@ -282,4 +287,23 @@ abstract contract IValidatorRegistryTest is Test {
         );
         registry.drop(validatorIds);
     }
+
+    // -- Helpers --
+
+    function _signFeedRegistrationMessageV2(uint privKey)
+        internal
+        view
+        returns (IScribe.ECDSAData memory)
+    {
+        Vm.Wallet memory w = vm.createWallet(privKey);
+        LibSecp256k1.Point memory pubKey =
+            LibSecp256k1.Point(w.publicKeyX, w.publicKeyY);
+
+        bytes32 message = registry.constructFeedRegistrationMessageV2(pubKey);
+
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(privKey, message);
+
+        return IScribe.ECDSAData(v, r, s);
+    }
+    */
 }

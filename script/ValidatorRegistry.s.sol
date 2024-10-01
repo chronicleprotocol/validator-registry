@@ -27,6 +27,7 @@ contract ValidatorRegistryScript is Script {
 
     // -- IValidatorRegistry Functions --
 
+    /*
     /// @dev Lifts validator `validator`.
     function lift(address self, address validator) public {
         vm.startBroadcast();
@@ -47,6 +48,7 @@ contract ValidatorRegistryScript is Script {
             console.log("  ", validators[i]);
         }
     }
+    */
 
     /// @dev Drops validator with validator id `validatorId`.
     function drop(address self, uint8 validatorId) public {
