@@ -39,7 +39,11 @@ $ env | grep -e "RPC_URL" -e "KEYSTORE" -e "KEYSTORE_PASSWORD" -e "VALIDATOR_REG
 
 Set the following environment variables:
 
-- `VALIDATOR`: The validator's address
+- `VALIDATOR_PUBLIC_KEY_X`: The validator's public key's x coordinate
+- `VALIDATOR_PUBLIC_KEY_Y`: The validator's public key's y coordinate
+- `VALIDATOR_SIG_V`: The validator's registration signature's v value
+- `VALIDATOR_SIG_R`: The validator's registration signature's r value
+- `VALIDATOR_SIG_S`: The validator's registration signature's s value
 
 Run:
 
@@ -49,7 +53,7 @@ $ forge script \
     --password "$KEYSTORE_PASSWORD" \
     --broadcast \
     --rpc-url $RPC_URL \
-    --sig $(cast calldata "lift(address,address)" "$VALIDATOR_REGISTRY" "$VALIDATOR")\
+    --sig $(cast calldata "lift(address,uint,uint,uint8,bytes32,bytes32)" "$VALIDATOR_REGISTRY" "$VALIDATOR_PUBLIC_KEY_X" "$VALIDATOR_PUBLIC_KEY_Y" "$VALIDATOR_SIG_V" "$VALIDATOR_SIG_R" "$VALIDATOR_SIG_S")\
     -vvv \
     script/ValidatorRegistry.s.sol:ValidatorRegistryScript
 ```
@@ -58,7 +62,15 @@ $ forge script \
 
 Set the following environment variables:
 
-- `VALIDATORS`: The validators' addresses
+- `VALIDATOR_PUBLIC_KEY_XS`: The validators' public key's x coordinate
+    - Note to use the following format: `"[<elem>,<elem>]"`
+- `VALIDATOR_PUBLIC_KEY_YS`: The validators' public key's y coordinate
+    - Note to use the following format: `"[<elem>,<elem>]"`
+- `VALIDATOR_SIG_VS`: The validators' registration signature's v value
+    - Note to use the following format: `"[<elem>,<elem>]"`
+- `VALIDATOR_SIG_RS`: The validators' registration signature's r value
+    - Note to use the following format: `"[<elem>,<elem>]"`
+- `VALIDATOR_SIG_SS`: The validators' registration signature's s value
     - Note to use the following format: `"[<elem>,<elem>]"`
 
 Run:
@@ -69,7 +81,7 @@ $ forge script \
     --password "$KEYSTORE_PASSWORD" \
     --broadcast \
     --rpc-url $RPC_URL \
-    --sig $(cast calldata "lift(address,address[])" "$VALIDATOR_REGISTRY" "$VALIDATORS")\
+    --sig $(cast calldata "lift(address,uint[],uint[],uint8[],bytes32[],bytes32[])" "$VALIDATOR_REGISTRY" "$VALIDATOR_PUBLIC_KEY_XS" "$VALIDATOR_PUBLIC_KEY_YS" "$VALIDATOR_SIG_VS" "$VALIDATOR_SIG_RS" "$VALIDATOR_SIG_SS")\
     -vvv \
     script/ValidatorRegistry.s.sol:ValidatorRegistryScript
 ```

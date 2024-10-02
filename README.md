@@ -1,4 +1,4 @@
-# ValidatorRegistry • [![Unit Tests](https://github.com/chronicleprotocol/validator-registry/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/chronicleprotocol/validator-registry/actions/workflows/unit-tests.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+# ValidatorRegistry • [![CI](https://github.com/chronicleprotocol/validator-registry/actions/workflows/ci.yml/badge.svg)](https://github.com/chronicleprotocol/validator-registry/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 This contract provides an onchain registry for _Chronicle Protocol_ validators via 1-byte validators ids.
 
@@ -42,12 +42,7 @@ Lint:
 $ forge fmt [--check]
 ```
 
-Update gas snapshots:
-
-```bash
-$ forge snapshot --nmt "Fuzz" [--check]
-```
-
 ## Dependencies
 
 - [chronicleprotocol/chronicle-std@v2](https://github.com/chronicleprotocol/chronicle-std/tree/v2)
+- [chronicleprotocol/scribe@v2](https://github.com/chronicleprotocol/scribe/tree/v2)
