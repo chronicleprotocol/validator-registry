@@ -8,6 +8,10 @@ Due to validator ids being 1 byte, the maximum number of feeds supported is 256.
 
 Note that a set of lifted validators can be encoded in a single uint. The code refers to it as `uint bloom`.
 
+> [!IMPORTANT]
+> Due to a vulnerability in Scribe this registry also implements a proof of possession to defend against rogue key attacks.
+> The proof of possession is an ECDSA signature signing a message derived from the validator's public key, the Chronicle Validator Registration Message V2.
+
 ## Installation
 
 Install module via Foundry:
