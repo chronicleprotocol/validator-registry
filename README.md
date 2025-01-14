@@ -17,7 +17,7 @@ Note that a set of lifted validators can be encoded in a single uint. The code r
 Install module via Foundry:
 
 ```bash
-$ forge install chronicleprotocol/validator-registry@v1
+$ forge install chronicleprotocol/validator-registry@v2
 ```
 
 ## Contributing
