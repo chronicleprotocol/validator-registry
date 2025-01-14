@@ -23,7 +23,7 @@ contract ValidatorRegistryTest is Test {
     event ValidatorLifted(address indexed caller, address indexed validator);
     event ValidatorDropped(address indexed caller, address indexed validator);
 
-    // Copied from IValidatorRegistry.
+    // Copied from ValidatorRegistry.
     uint private constant _SECP256K1_P =
         0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F;
 

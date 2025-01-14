@@ -10,6 +10,7 @@ import {IValidatorRegistry} from "./IValidatorRegistry.sol";
 
 /**
  * @title ValidatorRegistry
+ * @custom:version 2.0.0
  *
  * @notice Single source of truth for all of Chronicle Protocol's validators
  *
@@ -35,6 +36,9 @@ import {IValidatorRegistry} from "./IValidatorRegistry.sol";
  *      Message V2.
  *
  *      Without a valid ECDSA signature a validator cannot be lifted!
+ *
+ * @author Chronicle Labs, Inc
+ * @custom:security-contact security@chroniclelabs.org
  */
 contract ValidatorRegistry is IValidatorRegistry, Auth {
     using LibSecp256k1 for LibSecp256k1.Point;
