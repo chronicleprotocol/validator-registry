@@ -7,6 +7,7 @@ import {IValidatorRegistry} from "./IValidatorRegistry.sol";
 
 /**
  * @title ValidatorRegistry
+ * @custom:version 1.0.0
  *
  * @notice Single source of truth for all of Chronicle Protocol's validators
  *
@@ -23,6 +24,9 @@ import {IValidatorRegistry} from "./IValidatorRegistry.sol";
  *
  *      Note that a set of lifted validators can be encoded in a single uint.
  *      The code refers to it as `uint bloom`.
+ *
+ * @author Chronicle Labs, Inc
+ * @custom:security-contact security@chroniclelabs.org
  */
 contract ValidatorRegistry is IValidatorRegistry, Auth {
     /// @dev Statically allocated array for validators.
