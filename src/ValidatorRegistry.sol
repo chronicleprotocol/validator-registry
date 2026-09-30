@@ -62,11 +62,28 @@ contract ValidatorRegistry is IValidatorRegistry, Auth {
     /// @inheritdoc IValidatorRegistry
     function constructValidatorRegistrationMessageV2(
         LibSecp256k1.Point memory pubKey
-    ) public pure returns (bytes32) {
+    ) public view returns (bytes32) {
+        // Note the domain separation via `address(this)` and `block.chainid`.
+        //
+        // Without them the signed payload is fully determined by the public key
+        // alone, so a proof-of-possession signature is valid on every chain and
+        // for every registry deployment. An observer who captures one signature
+        // could then present it to any other ValidatorRegistry to have that
+        // validator id registered without ever holding the private key at the
+        // time of that registry's own registration process. Binding the message
+        // to this registry and chain prevents that replay.
         return keccak256(
             abi.encodePacked(
                 "\x19Ethereum Signed Message:\n32",
-                keccak256(abi.encodePacked(_CONTEXT, pubKey.x, pubKey.y))
+                keccak256(
+                    abi.encodePacked(
+                        address(this),
+                        block.chainid,
+                        _CONTEXT,
+                        pubKey.x,
+                        pubKey.y
+                    )
+                )
             )
         );
     }
@@ -144,7 +161,6 @@ contract ValidatorRegistry is IValidatorRegistry, Auth {
         IScribe.ECDSAData memory feedRegistrationSigV2
     ) internal {
         address validator = pubKey.toAddress();
-        // assert(validator != address(0));
 
         // Verify public key's coordinates are field elements.
         require(pubKey.x < _SECP256K1_P);
@@ -152,6 +168,23 @@ contract ValidatorRegistry is IValidatorRegistry, Auth {
 
         // Verify public key is valid.
         require(pubKey.isOnCurve());
+
+        // Reject signature malleability.
+        //
+        // `ecrecover` accepts both (r, s) and (r, Q - s) for the same signer, so
+        // without these checks a single valid proof of possession has two
+        // distinct on-chain encodings. That breaks any off-chain uniqueness
+        // assumption (e.g. de-duplicating registrations by signature bytes) and
+        // is the standard defence-in-depth guard required for ECDSA verification.
+        //
+        // Note that `ecrecover` itself reverts on r == 0 or s == 0, and returns
+        // address(0) on any other invalid input, which the `signer` check below
+        // already rejects because `validator` is never address(0) here.
+        require(
+            feedRegistrationSigV2.s
+                <= 0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5D576E7357A4501DDFE92F46681B20A0,
+            "ValidatorRegistry: signature s not canonical"
+        );
 
         // Verify feed registration signature v2 is valid.
         address signer = ecrecover(
@@ -166,7 +199,10 @@ contract ValidatorRegistry is IValidatorRegistry, Auth {
 
         address current = _validators[validatorId];
         if (current != validator) {
-            require(current == address(0));
+            // Reject rather than silently overwriting: an occupied slot means a
+            // different validator already holds this id. Overwriting it would
+            // silently evict a live validator.
+            require(current == address(0), "ValidatorRegistry: id occupied");
 
             _validators[validatorId] = validator;
             emit ValidatorLifted(msg.sender, validator);
